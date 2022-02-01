@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <products>
-    <product_id>
-        22563930
-
-    </product_id>
+    <product>
+        <product_id>22563930</product_id>
+    </product>
 </products>
