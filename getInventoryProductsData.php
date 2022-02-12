@@ -228,7 +228,7 @@
                           $root->appendChild($product);
                           $product->appendChild( $dom->createElement('product_id', $variants_ids[$k]) );
                           $product->appendChild( $dom->createElement('item_group_id', $property) );
-                         $node= $product->appendChild( $dom->createElement('nemos', $variants[$variants_ids[$k]]->name) );
+                         $node= $product->appendChild( $dom->createElement('name', $variants[$variants_ids[$k]]->name) );
 
                         
                           //  var_dump($variants[$variants_ids[$k]]->name);
