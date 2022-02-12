@@ -3,8 +3,6 @@
     <product>
         <product_id>22563930</product_id>
         <name>Szafa Celeste12</name>
-        
-        
         <quantity>59994</quantity>
         <ean></ean>
         <sku></sku>
@@ -91,19 +89,7 @@
         <image>https://upload.cdn.baselinker.com/products/2004269/ce2e23fa013f470eb2ecc010225f8f20.jpg</image>
         <image_extra_1>https://upload.cdn.baselinker.com/products/2004269/a9c111f3fe1fe15382ff74ce57a604a9.jpg</image_extra_1>
         <image_extra_2>https://upload.cdn.baselinker.com/products/2004269/b601d43915e408af1a7ba23dc0edee76.jpg</image_extra_2>
-        <image_extra_3></image_extra_3>
-        <image_extra_4></image_extra_4>
-        <image_extra_5></image_extra_5>
-        <image_extra_6></image_extra_6>
-        <image_extra_7></image_extra_7>
-        <image_extra_8></image_extra_8>
-        <image_extra_9></image_extra_9>
-        <image_extra_10></image_extra_10>
-        <image_extra_11></image_extra_11>
-        <image_extra_12></image_extra_12>
-        <image_extra_13></image_extra_13>
-        <image_extra_14></image_extra_14>
-        <image_extra_15></image_extra_15>
+     
         <variants>
                     <variant>
                 <variant_id>22565693</variant_id>
