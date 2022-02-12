@@ -263,7 +263,7 @@
         }
 
         //echo '<xmp>'. $dom->saveXML() .'</xmp>';
-        $written = $dom->save('/var/www/html/php/result.xml') or die('XML Create Error');
+        $written = $dom->save('/home/master/applications/ancccjahdh/public_html/app/result.xml') or die('XML Create Error');
 
         var_dump($written);
 
