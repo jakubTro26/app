@@ -238,11 +238,11 @@
                          
                          
                             if(strlen($PHPcontent->products->$property->text_fields->{'name|de'})>0){
-                                $product->appendChild( $dom->createElement('nameDE', $PHPcontent->products->$property->text_fields->{'name|de'}) );
+                                $product->appendChild( $dom->createElement('titleDE', $PHPcontent->products->$property->text_fields->{'name|de'}) );
                             }
 
                             if(strlen($PHPcontent->products->$property->text_fields->{'name|en'})>0){
-                                $product->appendChild( $dom->createElement('nameEN', $PHPcontent->products->$property->text_fields->{'name|en'}) );
+                                $product->appendChild( $dom->createElement('titleEN', $PHPcontent->products->$property->text_fields->{'name|en'}) );
                             }
 
 
