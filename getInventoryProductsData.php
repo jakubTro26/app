@@ -226,7 +226,10 @@
                           // var_dump($variants[$variants_ids[$k]]);
                           $product = $dom->createElement('item');
                           $root->appendChild($product);
-                          $product->appendChild( $dom->createElement('id', $variants_ids[$k]) );
+
+                          $varid=$variants_ids[$k];
+                          $varid=$varid+5;
+                          $product->appendChild( $dom->createElement('id', $varid) );
                           $product->appendChild( $dom->createElement('item_group_id', $property) );
                          $node= $product->appendChild( $dom->createElement('title', $variants[$variants_ids[$k]]->name) );
 
