@@ -228,7 +228,7 @@
                           $root->appendChild($product);
 
                           $varid=$variants_ids[$k];
-                          $varid=$varid+5;
+                          $varid=$varid+6;
                           $product->appendChild( $dom->createElement('id', $varid) );
                           $product->appendChild( $dom->createElement('item_group_id', $property) );
                          $node= $product->appendChild( $dom->createElement('title', $variants[$variants_ids[$k]]->name) );
