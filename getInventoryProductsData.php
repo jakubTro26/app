@@ -2,25 +2,49 @@
 
     $idArray=['868'];
 
+
+    $categoryArray=[];
+    $producentArray=[];
     // 716
     //,'868'
 
     $ids = get_products_ids("https://api.baselinker.com/connector.php",$idArray);
 
+    getInventoryCategories();
 
+    getProducents();
+
+    
+  
+
+   // getTime();
 
   //  var_dump($productIdsArray);
 
     $productData = get_products_data("https://api.baselinker.com/connector.php",$productIdsArray);
 
 
-   
+     
 
-    
+    //var_dump($categoryArray);
    
     // var_dump(key($json['products']));
     
-     
+     function getTime(){
+
+       
+$methodParams = 'null';
+$apiParams = [
+    "method" => "getOrderTransactionDetails",
+    "parameters" => $methodParams
+];
+
+$curl = curl_init("https://api.baselinker.com/connector.php");
+curl_setopt($curl, CURLOPT_POST, 1);
+curl_setopt($curl, CURLOPT_HTTPHEADER, ["X-BLToken: 2001325-2004269-W4ZO31ZQNSLN0NI8ITHJ3Q1R71L479QBKOGVABB9YBXJXF6BZZQPFOLMN7IT5BJV"]);
+curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($apiParams));
+$response = curl_exec($curl);
+     }
 
  function get_products_ids($url,$ids){
 
@@ -88,10 +112,64 @@
 
  }
 
+  function getProducents(){
+
+    global $producentArray;
+    $methodParams = '{}';
+    $apiParams = [
+        "method" => "getInventoryManufacturers",
+        "parameters" => $methodParams
+    ];
+    
+    $curl = curl_init("https://api.baselinker.com/connector.php");
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, ["X-BLToken: 2001325-2004269-W4ZO31ZQNSLN0NI8ITHJ3Q1R71L479QBKOGVABB9YBXJXF6BZZQPFOLMN7IT5BJV"]);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($apiParams));
+    $response = curl_exec($curl);
+
+    $value = json_decode($response,true);
+
+     //var_dump($value);
+
+      foreach($value['manufacturers'] as $manu){
+          $producentArray[$manu['name']]=$manu['manufacturer_id'];
+     }
+  }
+
+ function getInventoryCategories(){
+
+    global$categoryArray;
+    $methodParams = '{
+        "storage_id": "bl_1"
+    }';
+    $apiParams = [
+        "method" => "getCategories",
+        "parameters" => $methodParams
+    ];
+    
+    $curl = curl_init("https://api.baselinker.com/connector.php");
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, ["X-BLToken: 2001325-2004269-W4ZO31ZQNSLN0NI8ITHJ3Q1R71L479QBKOGVABB9YBXJXF6BZZQPFOLMN7IT5BJV"]);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($apiParams));
+    $response = curl_exec($curl);
+
+     $value = json_decode($response,true);
+
+   //  var_dump($value['categories'][0]);
+
+     foreach($value['categories'] as $category){
+         $categoryArray[$category['name']]=$category['category_id'];
+     }
+ }
 
 
  function get_products_data($url,$ids) {
 
+
+        global $producentArray;
+        global $categoryArray;
         $keys =   array_keys($ids);
     
         $dom = new DOMDocument('1.0','UTF-8');
@@ -173,7 +251,7 @@
                         //foreach($PHPcontent->products->$property as $pro){
 
                         
-                      ///          var_dump($PHPcontent->products->$property);
+                              
                         
                        // }
 
@@ -188,14 +266,14 @@
 
 
                             
-                          //  var_dump($PHPcontent->products);
+                           var_dump($PHPcontent->products);
                            
 
                             // foreach($PHPcontent->products->$property->variants as $variant)
                             // {
 
                             //    // var_dump(array_keys(get_object_vars($variant)));
-                            //    //var_dump($PHPcontent->products->$property->variants);
+                            //var_dump($PHPcontent->products->$property->variants);
                             //    var_dump(array_keys(get_object_vars($PHPcontent->products->$property->variants)));
 
                             //     $product = $dom->createElement('product');
@@ -212,8 +290,11 @@
                  // var_dump(get_object_vars($PHPcontent->products->$property->variants));
                             $variants=get_object_vars($PHPcontent->products->$property->variants);
 
+                            $weight=$PHPcontent->products->$property->weight;
+                            
+                           // var_dump($weight);
 
-                          //  var_dump(get_object_vars($PHPcontent->products->$property));
+                           // var_dump(get_object_vars($PHPcontent->products));
                           
 
                             $variants_ids = array_keys(get_object_vars($PHPcontent->products->$property->variants));
@@ -226,28 +307,57 @@
                           // var_dump($variants[$variants_ids[$k]]);
                           $product = $dom->createElement('item');
                           $root->appendChild($product);
-
-                          $varid=$variants_ids[$k];
-                          $varid=$varid+6;
-                          $product->appendChild( $dom->createElement('id', $varid) );
+                          $product->appendChild( $dom->createElement('product_id', $variants_ids[$k]) );
                           $product->appendChild( $dom->createElement('item_group_id', $property) );
-                         $node= $product->appendChild( $dom->createElement('title', $variants[$variants_ids[$k]]->name) );
+                          $node= $product->appendChild( $dom->createElement('title', $variants[$variants_ids[$k]]->name) );
+                          $product->appendChild( $dom->createElement('sku', $variants[$variants_ids[$k]]->sku) );
+                          $product->appendChild( $dom->createElement('ean', $variants[$variants_ids[$k]]->ean) );
+                          $product->appendChild( $dom->createElement('weight', $weight) );
+                          $product->appendChild( $dom->createElement('height',$PHPcontent->products->$property->height ) );
+                          $product->appendChild( $dom->createElement('width',$PHPcontent->products->$property->width ) );
+                          $product->appendChild( $dom->createElement('length',$PHPcontent->products->$property->length ) );
+                          $product->appendChild( $dom->createElement('nr_of_packages',$PHPcontent->products->$property->text_fields->extra_field_246 ) );
+                          $product->appendChild( $dom->createElement('handling_time',$PHPcontent->products->$property->text_fields->extra_field_295 ) );
+                          $product->appendChild( $dom->createElement('priceDE',$PHPcontent->products->$property->prices->{'73'} ) );
+                          $product->appendChild( $dom->createElement('priceFR',$PHPcontent->products->$property->prices->{'74'} ) );
+                          $product->appendChild( $dom->createElement('priceIT',$PHPcontent->products->$property->prices->{'75'} ) );
+                          $product->appendChild( $dom->createElement('priceES',$PHPcontent->products->$property->prices->{'76'} ) );
+                          $product->appendChild( $dom->createElement('pricePL',$PHPcontent->products->$property->prices->{'78'} ) );
+                          $product->appendChild( $dom->createElement('priceUK',$PHPcontent->products->$property->prices->{'79'} ) );
+                          $product->appendChild( $dom->createElement('description',$PHPcontent->products->$property->text_fields->description ) );
+                          $product->appendChild( $dom->createElement('description_extra1',$PHPcontent->products->$property->text_fields->description_extra1 ) );
+                          $product->appendChild( $dom->createElement('description_extra2',$PHPcontent->products->$property->text_fields->description_extra2 ) );
+                          $product->appendChild( $dom->createElement('description_extra3',$PHPcontent->products->$property->text_fields->description_extra3 ) );
+                          $product->appendChild( $dom->createElement('description_extra4',$PHPcontent->products->$property->text_fields->description_extra4 ) );
+                          $product->appendChild( $dom->createElement('bp5',$PHPcontent->products->$property->text_fields->extra_field_11 ) );
+                          $product->appendChild( $dom->createElement('searchterms',$PHPcontent->products->$property->text_fields->extra_field_278 ) );
+                          $product->appendChild( $dom->createElement('image1',$PHPcontent->products->$property->images->{'1'} ) );
+                          $product->appendChild( $dom->createElement('image2',$PHPcontent->products->$property->images->{'2'} ) );
+                          $product->appendChild( $dom->createElement('image2',$PHPcontent->products->$property->images->{'3'} ) );
+                         //   var_dump($variants_ids[$k]);
 
-                        
-                          //  var_dump($variants[$variants_ids[$k]]->name);
-
-                           
-                          
+                         
+                         
                          
                          
                             if(strlen($PHPcontent->products->$property->text_fields->{'name|de'})>0){
-                                $product->appendChild( $dom->createElement('titleDE', $PHPcontent->products->$property->text_fields->{'name|de'}) );
+                                $product->appendChild( $dom->createElement('nameDE', $PHPcontent->products->$property->text_fields->{'name|de'}) );
                             }
 
                             if(strlen($PHPcontent->products->$property->text_fields->{'name|en'})>0){
-                                $product->appendChild( $dom->createElement('titleEN', $PHPcontent->products->$property->text_fields->{'name|en'}) );
+                                $product->appendChild( $dom->createElement('nameEN', $PHPcontent->products->$property->text_fields->{'name|en'}) );
                             }
 
+
+                            $name= array_search($PHPcontent->products->$property->category_id, $categoryArray);
+
+                            $product->appendChild( $dom->createElement('category', $name));
+
+                            $producent= array_search($PHPcontent->products->$property->manufacturer_id, $producentArray);
+
+                            //var_dump($producent);
+
+                            $product->appendChild( $dom->createElement('producent', $producent));
 
                              if(strlen($description)>0)
                               {
@@ -255,8 +365,15 @@
                               }
                             if(strlen($description_extra1)>0)
                               {
-                                         $product->appendChild( $dom->createElement('description_extra_1', $description_extra1) );
+                                         
                               }
+
+
+                              
+
+                             
+
+                            
                        }
 
                        // $array1 = array_keys(get_object_vars($PHPcontent->products));
@@ -268,7 +385,7 @@
         //echo '<xmp>'. $dom->saveXML() .'</xmp>';
         $written = $dom->save('/home/master/applications/ancccjahdh/public_html/result.xml') or die('XML Create Error');
 
-        var_dump($written);
+        
 
         $filepathname = "../result.xml";
         $target = "1";
