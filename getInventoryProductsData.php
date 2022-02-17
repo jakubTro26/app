@@ -310,6 +310,13 @@ $response = curl_exec($curl);
                           $product->appendChild( $dom->createElement('product_id', $variants_ids[$k]) );
                           $product->appendChild( $dom->createElement('item_group_id', $property) );
                           $node= $product->appendChild( $dom->createElement('title', $variants[$variants_ids[$k]]->name) );
+                          if(strlen($PHPcontent->products->$property->text_fields->{'name|de'})>0){
+                            $product->appendChild( $dom->createElement('titleDE', $PHPcontent->products->$property->text_fields->{'name|de'}) );
+                        }
+
+                        if(strlen($PHPcontent->products->$property->text_fields->{'name|en'})>0){
+                            $product->appendChild( $dom->createElement('titleEN', $PHPcontent->products->$property->text_fields->{'name|en'}) );
+                        }
                           $name= array_search($PHPcontent->products->$property->category_id, $categoryArray);
 
                           $product->appendChild( $dom->createElement('category', $name));
@@ -349,13 +356,7 @@ $response = curl_exec($curl);
                          
                          
                          
-                            if(strlen($PHPcontent->products->$property->text_fields->{'name|de'})>0){
-                                $product->appendChild( $dom->createElement('nameDE', $PHPcontent->products->$property->text_fields->{'name|de'}) );
-                            }
 
-                            if(strlen($PHPcontent->products->$property->text_fields->{'name|en'})>0){
-                                $product->appendChild( $dom->createElement('nameEN', $PHPcontent->products->$property->text_fields->{'name|en'}) );
-                            }
 
 
 
