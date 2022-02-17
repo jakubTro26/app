@@ -310,6 +310,15 @@ $response = curl_exec($curl);
                           $product->appendChild( $dom->createElement('product_id', $variants_ids[$k]) );
                           $product->appendChild( $dom->createElement('item_group_id', $property) );
                           $node= $product->appendChild( $dom->createElement('title', $variants[$variants_ids[$k]]->name) );
+                          $name= array_search($PHPcontent->products->$property->category_id, $categoryArray);
+
+                          $product->appendChild( $dom->createElement('category', $name));
+
+                          $producent= array_search($PHPcontent->products->$property->manufacturer_id, $producentArray);
+
+                          //var_dump($producent);
+
+                          $product->appendChild( $dom->createElement('producent', $producent));
                           $product->appendChild( $dom->createElement('sku', $variants[$variants_ids[$k]]->sku) );
                           $product->appendChild( $dom->createElement('ean', $variants[$variants_ids[$k]]->ean) );
                           $product->appendChild( $dom->createElement('weight', $weight) );
@@ -349,19 +358,11 @@ $response = curl_exec($curl);
                             }
 
 
-                            $name= array_search($PHPcontent->products->$property->category_id, $categoryArray);
 
-                            $product->appendChild( $dom->createElement('category', $name));
-
-                            $producent= array_search($PHPcontent->products->$property->manufacturer_id, $producentArray);
-
-                            //var_dump($producent);
-
-                            $product->appendChild( $dom->createElement('producent', $producent));
 
                              if(strlen($description)>0)
                               {
-                                         $product->appendChild( $dom->createElement('description', $description) );
+                                         
                               }
                             if(strlen($description_extra1)>0)
                               {
