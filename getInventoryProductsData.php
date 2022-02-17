@@ -309,7 +309,7 @@ $response = curl_exec($curl);
                           $root->appendChild($product);
                           $product->appendChild( $dom->createElement('product_id', $variants_ids[$k]) );
                           $product->appendChild( $dom->createElement('item_group_id', $property) );
-                          $node= $product->appendChild( $dom->createElement('title', $variants[$variants_ids[$k]]->name) );
+                          $node= $product->appendChild( $dom->createElement('titlee', $variants[$variants_ids[$k]]->name) );
                           if(strlen($PHPcontent->products->$property->text_fields->{'name|de'})>0){
                             $product->appendChild( $dom->createElement('titleDE', $PHPcontent->products->$property->text_fields->{'name|de'}) );
                         }
