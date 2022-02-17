@@ -302,7 +302,7 @@ $response = curl_exec($curl);
                           // var_dump($variants_ids);
 
                        for($k=0;$k<count(get_object_vars($PHPcontent->products->$property->variants));$k++){
-
+                        var_dump('kuba');
                            // var_dump($variants[$k]);
                           // var_dump($variants[$variants_ids[$k]]);
                           $product = $dom->createElement('item');
