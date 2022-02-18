@@ -3,10 +3,30 @@
     $idArray=['868'];
 
 
+//  801 - Kocot Kids Nowy
+//  712 - Comad
+//  716 - Wróbel
+//  741 - Akord
+//  715 - Piaski Skrzyniowe
+//  886 - Piaski Tapicerka
+//  714 - Platforma Mebli
+//  813 - Laski Skrzyniowe
+//  880 - Laski Tapicerka
+//  713 - Furnival
+//  867 - Presti\u017c
+//  742 - Vivaldi
+//  796 - Lemur
+//  868 - Marpol
+//  788 - Allegro
+//  72 - Katalog domy\u015blny
+//  1184 - Akord hurtownia
+
+
+
+
     $categoryArray=[];
     $producentArray=[];
-    // 716
-    //,'868'
+   
 
     $ids = get_products_ids("https://api.baselinker.com/connector.php",$idArray);
 
